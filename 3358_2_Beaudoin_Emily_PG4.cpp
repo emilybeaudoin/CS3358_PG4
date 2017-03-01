@@ -8,6 +8,21 @@ struct ListNode //node structure
 	list *next; //pointer to next node
 }
 
+appendNode(int);
+insertNode(int); //inserts a node at the beginning
+insertNode(int,int); //inserts a node containing a position
+deleteNode(int); //deletes a node with contents
+deleteNodeAt(int); //deletes a node at position 
+displayListForward(); 
+displayListBackwards();
+splitList();
+deleteList();
+
+int main ()
+{
+
+}
+
 appendNode(int num)
 {
 
@@ -28,7 +43,27 @@ deleteNode(int num)
 
 }
 
-int main ()
+deleteNodeAt(int num)
 {
 
+}
+
+displayListForward()
+{
+
+} 
+
+displayListBackwards()
+{
+
+}
+
+splitlist()
+{
+
+}
+
+deleteList()
+{
+	
 }
