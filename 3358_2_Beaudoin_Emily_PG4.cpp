@@ -18,6 +18,11 @@ insertNode(int num)
 
 }
 
+insertNode(int num, int position)
+{
+
+}
+
 deleteNode(int num)
 {
 
