@@ -142,11 +142,28 @@ void insertNode(ListNode *&h, int num, int &size)
 	size++;
 }
 
+//inserts node containing num at a specific position in the list
 void insertNode(ListNode *&h, int num, int position, int &size)
 {
-	//code
+    ListNode *newNode = new ListNode; //dynamically allocates new node
+    ListNode *p; //pointer to traverse the list
+    ListNode *n; //pointer to traverse the list
+    newNode->value = num; //assigns num to newNode value
+    n = h; //makes n point to head
 
-
+    if(position == 1){
+        h = newNode; //makes h point to newNode
+        newNode->next = n; //makes newNode point to n
+    }
+    else{
+        for(int i = 0; i < position-1; i++)
+        {
+            p = n; //makes p point to n
+            n = n->next; //makes n point to next node
+        }
+        p->next = newNode; //makes p point to newNode
+        newNode->next = n; //makes newNode point to n
+    }
 	size++;
 }
 
@@ -207,11 +224,27 @@ void deleteNode(ListNode *&h, int num, int &size)
 	size--;
 }
 
+//deletes a node from a specific position in the list 
 void deleteNodeAt(ListNode *&h, int num, int &size)
 {
-	//code
+    ListNode *p; //keeps record of list
+    ListNode *node; //node to be deleted
+    node = h; //makes node point to head
 
+    if(position == 1){
+            p = node->next; //makes p point to next node
+            h = p; //makes head point to p
+    }
+    else{
+        for(int i = 0; i < position-1; i++)
+        {
+            p = node; //makes p point to node
+            node = node->next; //makes node point to the next node
+        }
+        p->next = node->next; //connects the list so node can be deleted
+    }
 
+    delete node; //deletes node
 	size--;
 }
 
