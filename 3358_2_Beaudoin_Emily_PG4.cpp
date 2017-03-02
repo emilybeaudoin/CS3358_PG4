@@ -225,7 +225,7 @@ void deleteNode(ListNode *&h, int num, int &size)
 }
 
 //deletes a node from a specific position in the list 
-void deleteNodeAt(ListNode *&h, int num, int &size)
+void deleteNodeAt(ListNode *&h, int position, int &size)
 {
     ListNode *p; //keeps record of list
     ListNode *node; //node to be deleted
