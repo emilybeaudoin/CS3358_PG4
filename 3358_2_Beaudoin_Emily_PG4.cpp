@@ -32,6 +32,11 @@ int main ()
 	srand(time(NULL));
 
 	buildSortedList(head, size);
+
+			cout << "OG List: " << endl;
+			displayListForward(head,true,size);
+			cout << endl << endl;
+
 	insertNode(head, -100, size);
 	//insertNode(head, 15, 2, size); //inserts 15 at 3rd position in list
 	appendNode(head, 1000, size);
@@ -40,7 +45,7 @@ int main ()
 	rotateList(head);
 	//searchList(head, 17);
 	displayListForward(head, false, size);
-	//splitList(head, size);
+	splitList(head, size);
 	//deleteDuplicates(head, size);
 	deleteList(head, size);
 
@@ -154,12 +159,14 @@ void rotateList(ListNode *&h)
 	}
 
 	ptr = h; //sets ptr to beginning
-	while(ptr->next){ //goes to the last node
+	while(ptr->next->next){ //goes to the second to last node
 		ptr = ptr->next;
 	}
 
-	ptr->next = h; //makes last node point to first
-	h = ptr; //resets last as first
+	ptr->next->next = h; //makes last node point to first
+	h = ptr->next; //resets last as first
+	ptr->next = NULL; //makes new end of list point to NULL
+
 }
 
 void searchList(ListNode *&h, int num)
@@ -240,19 +247,21 @@ void displayListForward(ListNode *&h, bool f, int size)
 } 
 
 
-void splitlist(ListNode *&h, int size)
+void splitList(ListNode *&h, int size)
 {
 	ListNode *headSub1,
 			 *headSub2,
 		     *ptr; //for traversal
+	int sizeSub1 = 10, //determined by assignment
+		sizeSub2 = size - 10; //leftover 
 
-	if (size > 10){ //ensures list is large enought to split
+	if (size > sizeSub1){ //ensures list is large enought to split
 		headSub1 = h;
 		headSub2 = h; //to start traversal
 
-		for (int i = 0; i < 10; i++){ //goes to ninth node
-				ptr = headSub2;
-				headSub2 = ptr->next;
+		for (int i = 0; i < sizeSub1; i++){ //goes to tenth node
+				ptr = headSub2; //save
+				headSub2 = ptr->next; //advance
 		}
 		
 		ptr->next = NULL; //splits the list
@@ -262,11 +271,16 @@ void splitlist(ListNode *&h, int size)
         return; //exits if not enough nodes to split	
     }
 
-    //display original list and sub lists
+    cout << "Sub List 1:" << endl;
+    displayListForward(headSub1,true,sizeSub1);
+    cout << endl;
+
+    cout << "Sub List 2:" << endl;
+    displayListForward(headSub2,true,sizeSub2);
+    cout << endl;
+
     //display union and intersection of sub lists
     //rejoin sublists into main list
-
-
 }
 
 void deleteList(ListNode *&h, int &size)
@@ -275,3 +289,5 @@ void deleteList(ListNode *&h, int &size)
 
 	size = 0;
 }
+
+
