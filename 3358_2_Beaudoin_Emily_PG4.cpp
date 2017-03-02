@@ -19,7 +19,8 @@ void searchList(ListNode *&, int);
 void deleteNode(ListNode *&, int, int &); //deletes a node with contents
 void deleteNodeAt(ListNode *&, int, int &); //deletes a node at position
 void deleteDuplicates(ListNode *&, int &); 
-void displayListForward(ListNode *&, bool, int); //displays list forward(T) or backward(F)
+void displayList(ListNode *&);
+void displayList(ListNode *&, int); //displays list backward
 void displayUnion(ListNode *&, ListNode *&);
 void displayIntersection(ListNode *&, ListNode *&);
 void splitList(ListNode *&, int);
@@ -32,34 +33,20 @@ int main ()
 	srand(time(NULL));
 
 	buildSortedList(head, size);
-
-			cout << "OG List: " << endl;
-			displayListForward(head,true,size);
-			cout << endl << endl;
-
 	insertNode(head, -100, size);
-	//insertNode(head, 15, 2, size); //inserts 15 at 3rd position in list
+	insertNode(head, 15, 3, size); //inserts 15 at 3rd position in list
 	appendNode(head, 1000, size);
 	deleteNode(head, 5, size);
-	//deleteNodeAt(head, 1, size); //removes 2nd node from the list
+	deleteNodeAt(head, 2, size); //removes 2nd node from the list
 	rotateList(head);
-	//searchList(head, 17);
-	displayListForward(head, false, size);
+	searchList(head, 17);
+	displayList(head, size); //displays list backwards
 	splitList(head, size);
 	//deleteDuplicates(head, size);
-	deleteList(head, size);
+	//deleteList(head, size);
+	searchList(head, 35);
 
-
-	//testing display function:
-	/*
-	buildSortedList(head, SIZE_OF_LIST);
-	displayListForward(head, true, SIZE_OF_LIST);
-	displayListForward(head, false, SIZE_OF_LIST);
-	*/
-
-
-
-
+	return 0;
 
 }
 
@@ -102,6 +89,11 @@ void buildSortedList(ListNode *&h, int size){
 		}
 	}
 
+	cout << "A sorted main list of " << size << " random integer numbers" << endl
+	 	 << "that are between 10 and 20 are as follows:" << endl;
+	displayList(h);
+	cout << endl;
+
 } 
 
 void appendNode(ListNode *&h, int num, int &size)
@@ -125,6 +117,10 @@ void appendNode(ListNode *&h, int num, int &size)
 		ptr->next = newNode; //appends node to the end
 	}
 
+	cout << "Main List after appending new number " << num << ":" << endl;
+	displayList(h);
+	cout << endl;
+
 	size++;
 }
 
@@ -139,13 +135,17 @@ void insertNode(ListNode *&h, int num, int &size)
 	newNode->next = h; //makes new node point to head
 	h = newNode; //makes head point to new node
 
+	cout << "Main List after inserting new number " << num 
+	     << " at the beginning:" << endl;
+	displayList(h);
+	cout << endl;
+
 	size++;
 }
 
-//inserts node containing num at a specific position in the list
 void insertNode(ListNode *&h, int num, int position, int &size)
 {
-    ListNode *newNode = new ListNode; //dynamically allocates new node
+	ListNode *newNode = new ListNode; //dynamically allocates new node
     ListNode *p; //pointer to traverse the list
     ListNode *n; //pointer to traverse the list
     newNode->value = num; //assigns num to newNode value
@@ -164,6 +164,12 @@ void insertNode(ListNode *&h, int num, int position, int &size)
         p->next = newNode; //makes p point to newNode
         newNode->next = n; //makes newNode point to n
     }
+
+	cout << "Main List after inserting new number " << num 
+	     << " at the " << position << " location:" << endl;
+	displayList(h);
+	cout << endl;
+
 	size++;
 }
 
@@ -184,11 +190,40 @@ void rotateList(ListNode *&h)
 	h = ptr->next; //resets last as first
 	ptr->next = NULL; //makes new end of list point to NULL
 
+	cout << "Main list after rotating the list one position to the right:" << endl;
+	displayList(h);
+	cout << endl;
+
 }
 
 void searchList(ListNode *&h, int num)
 {
+	cout << "Searching the main list for number " << num << endl;
+	if (!h){ //empty list, exit
+		cout << "List empty" << endl;
+		return;
+	}
 
+	ListNode *p = h; //to traverse the list
+	int position = 1;
+
+	if(h->value == num){ //if first node is num
+		cout << "Item " << num << " found at location " << position  << endl;
+	}
+	else{ 
+		while(p && p->value != num){ //searches for index of num
+			p = p->next; //advances
+			position++;
+		}
+
+		if(!p){ 
+			cout << num << " was not in the list" << endl;
+		}
+		else{
+			cout << "Item " << num << " found at location " << position  << endl;
+		}
+	}
+	cout << endl;
 }
 
 //code taken from linkedlist notes
@@ -217,14 +252,18 @@ void deleteNode(ListNode *&h, int num, int &size)
 			delete p;
 		}
 		else{ //num was not found, outputs message
-			cout << num << "was not in the list" << endl;
+			cout << num << " was not in the list" << endl;
 		}
 	}
+
+	cout << "Main list after removing number " << num << ":" << endl;
+	displayList(h);
+	cout << endl;
 
 	size--;
 }
 
-//deletes a node from a specific position in the list 
+//deletes a node from a specific position in the list
 void deleteNodeAt(ListNode *&h, int position, int &size)
 {
     ListNode *p; //keeps record of list
@@ -245,6 +284,11 @@ void deleteNodeAt(ListNode *&h, int position, int &size)
     }
 
     delete node; //deletes node
+
+    cout << "Main list after removing the " << position << " element:" << endl;
+    displayList(h);
+    cout << endl;
+
 	size--;
 }
 
@@ -254,31 +298,68 @@ void deleteDuplicates(ListNode *&h, int &size){
 
 }
 
-void displayListForward(ListNode *&h, bool f, int size)
+//displays list forward
+void displayList(ListNode *&h)
 {
 	ListNode *ptr; //to traverse list
 
-	if(f){ //displays forward
-		ptr = h; //points to beginning
+	ptr = h; //points to beginning
 
-		while(ptr){ //while ptr does not point to NULL
-			cout << ptr->value << "   ";
+	while(ptr){ //while ptr does not point to NULL
+		cout << ptr->value << " ";
 
-			ptr = ptr->next; //advances
-		}
-		cout << endl;
+		ptr = ptr->next; //advances
 	}
-	else{ //displays backwards
-		for(int i = size - 1; i >= 0; i--){ //goes through size times
-			ptr = h; //resets at beginning
-			for(int j = 0; j < i; j++) //goes to last number yet to be displayed
-				ptr = ptr->next;
-			cout << ptr->value << "   "; 
-		}
-		cout << endl;
-	}
+	cout << endl;
+	
 } 
 
+//displays list backwards
+void displayList(ListNode *&h, int size) 
+{
+	ListNode *ptr;
+	
+	cout << "Displaying the main list backward:" << endl;
+
+	for(int i = size; i >= 0; i--){ //goes through size times
+		ptr = h; //resets at beginning
+		for(int j = 0; j < i; j++) //goes to last number yet to be displayed
+			ptr = ptr->next;
+		cout << ptr->value << " "; 
+	}
+
+	cout << endl << endl;
+
+}
+
+void displayUnion(ListNode *&h1, ListNode *&h2)
+{
+	//display the union of two list sets
+}
+
+
+//****problem with this, displays duplicates
+void displayIntersection(ListNode *&h1, ListNode *&h2)
+{
+	ListNode *ptr1,//first list traversal
+			 *ptr2;//second list traversal
+
+	ptr1 = h1;
+
+	cout << "Intersection of two lists:" << endl;
+
+	while(ptr1){ //continues until all values of list 1 are checked with list 2
+		ptr2 = h2; //resets to beginning of second list
+
+		while(ptr2 && ptr2->value != ptr1->value) //finds node with same value
+			ptr2 = ptr2->next; 
+		if(ptr2) //if value was found, prints result
+			cout << ptr2->value << " ";
+
+		ptr1 = ptr1->next; //advances
+	}
+	cout << endl;
+}
 
 void splitList(ListNode *&h, int size)
 {
@@ -287,6 +368,8 @@ void splitList(ListNode *&h, int size)
 		     *ptr; //for traversal
 	int sizeSub1 = 10, //determined by assignment
 		sizeSub2 = size - 10; //leftover 
+
+	cout << "Splitting the main list into 2 sub lists:" << endl;
 
 	if (size > sizeSub1){ //ensures list is large enought to split
 		headSub1 = h;
@@ -305,15 +388,19 @@ void splitList(ListNode *&h, int size)
     }
 
     cout << "Sub List 1:" << endl;
-    displayListForward(headSub1,true,sizeSub1);
+    displayList(headSub1);
     cout << endl;
 
     cout << "Sub List 2:" << endl;
-    displayListForward(headSub2,true,sizeSub2);
+    displayList(headSub2);
     cout << endl;
 
-    //display union and intersection of sub lists
+    //display union 
+    //displayIntersection(headSub1, headSub2);
     //rejoin sublists into main list
+
+    ptr->next = headSub2;
+
 }
 
 void deleteList(ListNode *&h, int &size)
@@ -322,5 +409,3 @@ void deleteList(ListNode *&h, int &size)
 
 	size = 0;
 }
-
-
