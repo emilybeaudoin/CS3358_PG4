@@ -10,30 +10,40 @@ struct ListNode //node structure
 	ListNode *next; //pointer to next node
 };
 
-void buildSortedList(ListNode *&, const int); //creates a sorted list of random numbers
-void appendNode(ListNode *&, int);
-void insertNode(ListNode *&, int); //inserts a node at the beginning
-void insertNode(ListNode *&, int,int); //inserts a node containing a position(starting at 0)
-void deleteNode(ListNode *&, int); //deletes a node with contents
-void deleteNodeAt(ListNode *&, int); //deletes a node at position 
-void displayListForward(ListNode *&, bool, const int); //displays list forward(T) or backward(F)
-void splitList(ListNode *&, const int);
-void deleteList(ListNode *&);
+void buildSortedList(ListNode *&, int); //creates a sorted list of random numbers
+void appendNode(ListNode *&, int, int &);
+void insertNode(ListNode *&, int, int &); //inserts a node at the beginning
+void insertNode(ListNode *&, int, int, int &); //inserts a node containing a position(starting at 0)
+void rotateList(ListNode *&);//rotates list one position to the right
+void searchList(ListNode *&, int);
+void deleteNode(ListNode *&, int, int &); //deletes a node with contents
+void deleteNodeAt(ListNode *&, int, int &); //deletes a node at position
+void deleteDuplicates(ListNode *&, int &); 
+void displayListForward(ListNode *&, bool, int); //displays list forward(T) or backward(F)
+void displayUnion(ListNode *&, ListNode *&);
+void displayIntersection(ListNode *&, ListNode *&);
+void splitList(ListNode *&, int);
+void deleteList(ListNode *&, int &);
 
 int main ()
 {
 	ListNode *head = NULL; //initializing the main empty list
-	const int SIZE_OF_LIST = 19;
+	int size = 19; //size of list starts at 19
 	srand(time(NULL));
 
-	buildSortedList(head, SIZE_OF_LIST);
-	/*
-	insertNode(head, -100);
-	insertNode(head, 15,2); //inserts 15 at 3rd position in list
-	appendNode(head, 1000);
-	deleteNode(head, 5);
-	deleteNodeAt(head, 1); //removes 2nd node from the list
-	*/
+	buildSortedList(head, size);
+	insertNode(head, -100, size);
+	//insertNode(head, 15, 2, size); //inserts 15 at 3rd position in list
+	appendNode(head, 1000, size);
+	deleteNode(head, 5, size);
+	//deleteNodeAt(head, 1, size); //removes 2nd node from the list
+	rotateList(head);
+	//searchList(head, 17);
+	displayListForward(head, false, size);
+	//splitList(head, size);
+	//deleteDuplicates(head, size);
+	deleteList(head, size);
+
 
 	//testing display function:
 	/*
@@ -49,13 +59,13 @@ int main ()
 }
 
 //creates a sorted list of random numbers
-void buildSortedList(ListNode *&h, const int SIZE){
+void buildSortedList(ListNode *&h, int size){
 	ListNode *newNode, //ptr to new node
 			 *ptr, //ptr to traverse list
 			 *previous; //holds previous node address during traversal
 	int num;
 
-	for(int i = 0; i < SIZE; i++){
+	for(int i = 0; i < size; i++){ //creates list of SIZE nodes, in ascending order
 
 		num = ((rand() % 10) + 10); //randomly generates a number 10-19
 
@@ -87,11 +97,9 @@ void buildSortedList(ListNode *&h, const int SIZE){
 		}
 	}
 
-
-
 } 
 
-void appendNode(ListNode *&h, int num)
+void appendNode(ListNode *&h, int num, int &size)
 {
 	ListNode *newNode, //points to new node
 			 *ptr; //ptr to traverse the list
@@ -111,11 +119,13 @@ void appendNode(ListNode *&h, int num)
 
 		ptr->next = newNode; //appends node to the end
 	}
+
+	size++;
 }
 
 //inserts node containing num at the beginning of the list
 //works whether or not the list is empty
-void insertNode(ListNode *&h, int num)
+void insertNode(ListNode *&h, int num, int &size)
 {
 	ListNode *newNode;
 
@@ -123,16 +133,42 @@ void insertNode(ListNode *&h, int num)
 	newNode->value = num; //assigns num to node value
 	newNode->next = h; //makes new node point to head
 	h = newNode; //makes head point to new node
+
+	size++;
 }
 
-void insertNode(ListNode *&h, int num, int position)
+void insertNode(ListNode *&h, int num, int position, int &size)
+{
+	//code
+
+
+	size++;
+}
+
+void rotateList(ListNode *&h)
+{
+	ListNode *ptr; //traversal pointer
+
+	if(!h){ //empty list, exit
+		return;
+	}
+
+	ptr = h; //sets ptr to beginning
+	while(ptr->next){ //goes to the last node
+		ptr = ptr->next;
+	}
+
+	ptr->next = h; //makes last node point to first
+	h = ptr; //resets last as first
+}
+
+void searchList(ListNode *&h, int num)
 {
 
 }
 
-
 //code taken from linkedlist notes
-void deleteNode(ListNode *&h, int num)
+void deleteNode(ListNode *&h, int num, int &size)
 {
 	if (!h) //empty list, exit
 		return;
@@ -160,14 +196,25 @@ void deleteNode(ListNode *&h, int num)
 			cout << num << "was not in the list" << endl;
 		}
 	}
+
+	size--;
 }
 
-void deleteNodeAt(ListNode *&h, int num)
+void deleteNodeAt(ListNode *&h, int num, int &size)
 {
+	//code
+
+
+	size--;
+}
+
+void deleteDuplicates(ListNode *&h, int &size){
+
+	//code
 
 }
 
-void displayListForward(ListNode *&h, bool f, const int SIZE)
+void displayListForward(ListNode *&h, bool f, int size)
 {
 	ListNode *ptr; //to traverse list
 
@@ -182,7 +229,7 @@ void displayListForward(ListNode *&h, bool f, const int SIZE)
 		cout << endl;
 	}
 	else{ //displays backwards
-		for(int i = SIZE - 1; i >= 0; i--){ //goes through size times
+		for(int i = size - 1; i >= 0; i--){ //goes through size times
 			ptr = h; //resets at beginning
 			for(int j = 0; j < i; j++) //goes to last number yet to be displayed
 				ptr = ptr->next;
@@ -190,17 +237,41 @@ void displayListForward(ListNode *&h, bool f, const int SIZE)
 		}
 		cout << endl;
 	}
-
-
 } 
 
 
-void splitlist(ListNode *&h, const int size)
+void splitlist(ListNode *&h, int size)
 {
+	ListNode *headSub1,
+			 *headSub2,
+		     *ptr; //for traversal
+
+	if (size > 10){ //ensures list is large enought to split
+		headSub1 = h;
+		headSub2 = h; //to start traversal
+
+		for (int i = 0; i < 10; i++){ //goes to ninth node
+				ptr = headSub2;
+				headSub2 = ptr->next;
+		}
+		
+		ptr->next = NULL; //splits the list
+    }
+    else{
+        cout << "Not enough nodes to split the list" << endl;
+        return; //exits if not enough nodes to split	
+    }
+
+    //display original list and sub lists
+    //display union and intersection of sub lists
+    //rejoin sublists into main list
+
 
 }
 
-void deleteList(ListNode *&h)
+void deleteList(ListNode *&h, int &size)
 {
-	
+	//code
+
+	size = 0;
 }
