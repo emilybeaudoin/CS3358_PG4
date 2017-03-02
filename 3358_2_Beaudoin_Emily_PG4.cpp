@@ -292,10 +292,36 @@ void deleteNodeAt(ListNode *&h, int position, int &size)
 	size--;
 }
 
-void deleteDuplicates(ListNode *&h, int &size){
+void deleteDuplicates(ListNode *&h, int &size)
+{
+	ListNode *p, //to traverse the list
+		 *previous,
+	         *ptr; //to hold the node searchind for duplicates on
+	
+	ptr = h;
 
-	//code
+	while(ptr){
+		p = ptr;
 
+
+	 	while(p && p->next){ // 
+	 		previous = p; //saves
+	 		p = p->next; //advances
+
+	 		if(p->value == ptr->value){
+	 			previous->next = p->next;
+	 			delete p;
+	 			p = previous;
+	 			size--;
+	 		}
+		}
+
+		ptr = ptr->next;
+	}
+
+	cout << "Main list after deleting duplicate numbers:" << endl;
+	displayList(h);
+	cout << endl;
 }
 
 //displays list forward
