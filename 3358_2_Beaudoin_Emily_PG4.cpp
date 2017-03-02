@@ -141,9 +141,9 @@ void insertNode(ListNode *&h, int num, int &size)
 void insertNode(ListNode *&h, int num, int position, int &size)
 {
     ListNode *newNode = new ListNode; //dynamically allocates new node
-    ListNode *p = new ListNode; //dynamically allocates new node
-    ListNode *n = new ListNode; //dynamically allocates new node
-    newNode->value = num; //assigns num to node value
+    ListNode *p; //pointer to traverse the list
+    ListNode *n; //pointer to traverse the list
+    newNode->value = num; //assigns num to newNode value
     n = h; //makes n point to head
 
     if(position == 1){
