@@ -1,3 +1,19 @@
+// Authors: Emily Beaudoin - 4, Alex Olsen - 30
+// Due Date: 02/8/17
+// Assignment Number: 4
+// Spring - 2017 - CS 3358 - 2
+// Instructor: Husain Gholoom
+//
+// This program randomly generates 19 integers, ranging from 10-19, and stores
+// them in a linked list. The program then sorts the values in the list from
+// least to greatest. Once the list is sorted, the program begins to execute
+// several operations that alter the list and its integers. After each
+// alteration, the program displays a message that states what changes were made
+// and displays the new list.
+
+// The user is able to re-run the program as desired before voluntarily exiting
+// the program.
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -10,54 +26,87 @@ struct ListNode //node structure
 	ListNode *next; //pointer to next node
 };
 
-void buildSortedList(ListNode *&, int); //creates a sorted list of random numbers
-void appendNode(ListNode *&, int, int &);
+void buildSortedList(ListNode *&, int); //creates a sorted list of random
+// numbers
+void appendNode(ListNode *&, int, int &); //inserts a node at the end
 void insertNode(ListNode *&, int, int &); //inserts a node at the beginning
-void insertNode(ListNode *&, int, int, int &); //inserts a node containing a position(starting at 0)
+void insertNode(ListNode *&, int, int, int &); //inserts a node containing a
+// position(starting at 0)
 void rotateList(ListNode *&);//rotates list one position to the right
-void searchList(ListNode *&, int);
+void searchList(ListNode *&, int); //searches the list for specific value
 void deleteNode(ListNode *&, int, int &); //deletes a node with contents
 void deleteNodeAt(ListNode *&, int, int &); //deletes a node at position
-void deleteDuplicates(ListNode *&, int &); 
-void displayList(ListNode *&);
+void deleteDuplicates(ListNode *&, int &); //deletes duplicate integers, if any
+void displayList(ListNode *&); //displays the integers in the list
 void displayList(ListNode *&, int); //displays list backward
 void displayUnion(ListNode *&, ListNode *&);
 void displayIntersection(ListNode *&, ListNode *&);
-void splitList(ListNode *&, int);
-void deleteList(ListNode *&, int &);
+void splitList(ListNode *&, int); //splits one list into two separate lists
+void deleteList(ListNode *&, int &); //deletes entire list
 
 int main ()
 {
-	ListNode *head = NULL; //initializing the main empty list
-	int size = 19; //size of list starts at 19
+    char answer; //represents user's answer to re-run program
 	srand(time(NULL));
 
-	buildSortedList(head, size);
-	insertNode(head, -100, size);
+	do
+    {
+    ListNode *head = NULL; //initializing the main empty list
+	int size = 19; //size of list starts at 19
+
+    buildSortedList(head, size); //builds a sorted list of integers
+	insertNode(head, -100, size); //inserts -100 to the beginning of the list
 	insertNode(head, 15, 3, size); //inserts 15 at 3rd position in list
-	appendNode(head, 1000, size);
-	deleteNode(head, 5, size);
+	appendNode(head, 1000, size); //inserts 1000 to the end of the list
+	deleteNode(head, 5, size); //deletes integer 5 from the list, if any
 	deleteNodeAt(head, 2, size); //removes 2nd node from the list
-	rotateList(head);
-	searchList(head, 17);
+	rotateList(head); //rotates all integers in the list to the right
+	searchList(head, 17); //searches the list of integers for 17
 	displayList(head, size); //displays list backwards
-	splitList(head, size);
-	//deleteDuplicates(head, size);
-	//deleteList(head, size);
-	searchList(head, 35);
+	splitList(head, size); //splits one list into two separate lists
+	deleteDuplicates(head, size); //deletes duplicate integers, if any
+	deleteList(head, size); //deletes entire list
+	searchList(head, 35); //searches the list of integers for 35
+
+	cout << "Would you like to re-run the program again\n"
+	     << "Enter Y or N   --->   ";
+    cin >> answer; //user's answer
+
+    while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n')
+// loop to ensure correct data type entered
+        {
+            cout << "\nERROR *** Invalid selection " << answer
+                 << " - Must be y|Y or n|N\n\n\n"
+                 << "Would you like to re-run the program again\n"
+                 << "Enter Y or N   --->   ";
+            cin >> answer;
+        }
+
+    cout << "\n";
+
+    }while(answer == 'Y' || answer == 'y');
+
+    cout << "This LL program is implemented by Alex Olsen and Emily Beaudoin\n"
+	     << "March - 2017\n";
 
 	return 0;
-
 }
 
-//creates a sorted list of random numbers
+// *****************************************************************************
+// buildSortedList function: creates a sorted list of random integers.
+//
+// h - represents the head, or beginning, of the list.
+// size - represents the size of the list.
+//******************************************************************************
+
 void buildSortedList(ListNode *&h, int size){
 	ListNode *newNode, //ptr to new node
 			 *ptr, //ptr to traverse list
 			 *previous; //holds previous node address during traversal
 	int num;
 
-	for(int i = 0; i < size; i++){ //creates list of SIZE nodes, in ascending order
+	for(int i = 0; i < size; i++){ //creates list of SIZE nodes, in ascending
+// order
 
 		num = ((rand() % 10) + 10); //randomly generates a number 10-19
 
@@ -89,12 +138,19 @@ void buildSortedList(ListNode *&h, int size){
 		}
 	}
 
-	cout << "A sorted main list of " << size << " random integer numbers" << endl
+	cout << "A sorted main list of " << size << " random integer numbers"
 	 	 << "that are between 10 and 20 are as follows:" << endl;
 	displayList(h);
 	cout << endl;
+}
 
-} 
+// *****************************************************************************
+// appendNode function: inserts an integer to the end of the list.
+//
+// h - represents the head, or beginning, of the list.
+// num - represents the integer being added to the list.
+// size - represents the size of the list.
+//******************************************************************************
 
 void appendNode(ListNode *&h, int num, int &size)
 {
@@ -124,8 +180,14 @@ void appendNode(ListNode *&h, int num, int &size)
 	size++;
 }
 
-//inserts node containing num at the beginning of the list
-//works whether or not the list is empty
+// *****************************************************************************
+// insertNode function: inserts an integer at the beginning of the list.
+//
+// h - represents the head, or beginning, of the list.
+// num - represents the integer being added to the list.
+// size - represents the size of the list.
+//******************************************************************************
+
 void insertNode(ListNode *&h, int num, int &size)
 {
 	ListNode *newNode;
@@ -135,13 +197,22 @@ void insertNode(ListNode *&h, int num, int &size)
 	newNode->next = h; //makes new node point to head
 	h = newNode; //makes head point to new node
 
-	cout << "Main List after inserting new number " << num 
+	cout << "Main List after inserting new number " << num
 	     << " at the beginning:" << endl;
 	displayList(h);
 	cout << endl;
 
 	size++;
 }
+
+// *****************************************************************************
+// insertNode function: inserts an integer at a given position in the list.
+//
+// h - represents the head, or beginning, of the list.
+// num - represents the integer being added to the list.
+// position - represents the position where the integer will be inserted.
+// size - represents the size of the list.
+//******************************************************************************
 
 void insertNode(ListNode *&h, int num, int position, int &size)
 {
@@ -165,13 +236,19 @@ void insertNode(ListNode *&h, int num, int position, int &size)
         newNode->next = n; //makes newNode point to n
     }
 
-	cout << "Main List after inserting new number " << num 
+	cout << "Main List after inserting new number " << num
 	     << " at the " << position << " location:" << endl;
 	displayList(h);
 	cout << endl;
 
 	size++;
 }
+
+// *****************************************************************************
+// rotateList function: rotates the integers one position to the right.
+//
+// h - represents the head, or beginning, of the list.
+//******************************************************************************
 
 void rotateList(ListNode *&h)
 {
@@ -190,17 +267,23 @@ void rotateList(ListNode *&h)
 	h = ptr->next; //resets last as first
 	ptr->next = NULL; //makes new end of list point to NULL
 
-	cout << "Main list after rotating the list one position to the right:" << endl;
+	cout << "Main list after rotating the list one position to the right:\n";
 	displayList(h);
 	cout << endl;
-
 }
+
+// *****************************************************************************
+// searchList function: searches the list for a specific integer.
+//
+// h - represents the head, or beginning, of the list.
+// num - represents the integer being searched for.
+//******************************************************************************
 
 void searchList(ListNode *&h, int num)
 {
-	cout << "Searching the main list for number " << num << endl;
+	cout << "Searching the main list for item number " << num << ":" << endl;
 	if (!h){ //empty list, exit
-		cout << "List empty" << endl;
+		cout << "List empty" << endl << endl;
 		return;
 	}
 
@@ -208,27 +291,37 @@ void searchList(ListNode *&h, int num)
 	int position = 1;
 
 	if(h->value == num){ //if first node is num
-		cout << "Item " << num << " found at location " << position  << endl;
+		cout << "Item " << num << " found at location " << position  << "\n";
 	}
-	else{ 
+	else{
 		while(p && p->value != num){ //searches for index of num
 			p = p->next; //advances
 			position++;
 		}
 
-		if(!p){ 
-			cout << num << " was not in the list" << endl;
+		if(!p){
+			cout << num << " was not in the list" << "\n";
 		}
 		else{
-			cout << "Item " << num << " found at location " << position  << endl;
+			cout << "Item " << num << " found at location " << position
+			     << "\n";
 		}
 	}
 	cout << endl;
 }
 
-//code taken from linkedlist notes
+// *****************************************************************************
+// deleteNode function: deletes a specific integer from the list.
+//
+// h - represents the head, or beginning, of the list.
+// num - represents the integer being deleted.
+// size - represents the size of the list.
+//******************************************************************************
+
 void deleteNode(ListNode *&h, int num, int &size)
 {
+    cout << "Main list after removing number " << num << ":" << endl;
+
 	if (!h) //empty list, exit
 		return;
 
@@ -237,8 +330,9 @@ void deleteNode(ListNode *&h, int num, int &size)
 		p = h;
 		h = p->next;
 		delete p;
+		displayList(h); //displays list after integer has been deleted
 	}
-	else{ 
+	else{
 		ListNode *previous; //trailing pointer
 		p = h; //traversal start at first node
 
@@ -250,20 +344,26 @@ void deleteNode(ListNode *&h, int num, int &size)
 		if(p){ //num was found, deletes node
 			previous->next = p->next;
 			delete p;
+			displayList(h); //displays list after integer has been deleted
 		}
 		else{ //num was not found, outputs message
 			cout << num << " was not in the list" << endl;
 		}
 	}
 
-	cout << "Main list after removing number " << num << ":" << endl;
-	displayList(h);
 	cout << endl;
 
 	size--;
 }
 
-//deletes a node from a specific position in the list
+// *****************************************************************************
+// deleteNodeAt function: deletes integer from the list at a specific location.
+//
+// h - represents the head, or beginning, of the list.
+// position - represents the position of the integer being deleted.
+// size - represents the size of the list.
+//******************************************************************************
+
 void deleteNodeAt(ListNode *&h, int position, int &size)
 {
     ListNode *p; //keeps record of list
@@ -292,19 +392,26 @@ void deleteNodeAt(ListNode *&h, int position, int &size)
 	size--;
 }
 
+// *****************************************************************************
+// deleteDuplicates function: deletes duplicate integers from the list.
+//
+// h - represents the head, or beginning, of the list.
+// size - represents the size of the list.
+//******************************************************************************
+
 void deleteDuplicates(ListNode *&h, int &size)
 {
 	ListNode *p, //to traverse the list
 		 *previous,
-	         *ptr; //to hold the node searchind for duplicates on
-	
+	         *ptr; //to hold the node searching for duplicates on
+
 	ptr = h;
 
 	while(ptr){
 		p = ptr;
 
 
-	 	while(p && p->next){ // 
+	 	while(p && p->next){ //
 	 		previous = p; //saves
 	 		p = p->next; //advances
 
@@ -324,7 +431,12 @@ void deleteDuplicates(ListNode *&h, int &size)
 	cout << endl;
 }
 
-//displays list forward
+// *****************************************************************************
+// displayList function: displays the integers contained in the list.
+//
+// h - represents the head, or beginning, of the list.
+//******************************************************************************
+
 void displayList(ListNode *&h)
 {
 	ListNode *ptr; //to traverse list
@@ -337,25 +449,29 @@ void displayList(ListNode *&h)
 		ptr = ptr->next; //advances
 	}
 	cout << endl;
-	
-} 
+}
 
-//displays list backwards
-void displayList(ListNode *&h, int size) 
+// *****************************************************************************
+// displayList function: displays the integers contained in the list backwards.
+//
+// h - represents the head, or beginning, of the list.
+// size - represents the size of the list.
+//******************************************************************************
+
+void displayList(ListNode *&h, int size)
 {
 	ListNode *ptr;
-	
+
 	cout << "Displaying the main list backward:" << endl;
 
 	for(int i = size; i >= 0; i--){ //goes through size times
 		ptr = h; //resets at beginning
 		for(int j = 0; j < i; j++) //goes to last number yet to be displayed
 			ptr = ptr->next;
-		cout << ptr->value << " "; 
+		cout << ptr->value << " ";
 	}
 
 	cout << endl << endl;
-
 }
 
 void displayUnion(ListNode *&h1, ListNode *&h2)
@@ -378,7 +494,7 @@ void displayIntersection(ListNode *&h1, ListNode *&h2)
 		ptr2 = h2; //resets to beginning of second list
 
 		while(ptr2 && ptr2->value != ptr1->value) //finds node with same value
-			ptr2 = ptr2->next; 
+			ptr2 = ptr2->next;
 		if(ptr2) //if value was found, prints result
 			cout << ptr2->value << " ";
 
@@ -387,13 +503,20 @@ void displayIntersection(ListNode *&h1, ListNode *&h2)
 	cout << endl;
 }
 
+// *****************************************************************************
+// splitList function: splits the list of integers into two separate lists.
+//
+// h - represents the head, or beginning, of the list.
+// size - represents the size of the list.
+//******************************************************************************
+
 void splitList(ListNode *&h, int size)
 {
 	ListNode *headSub1,
 			 *headSub2,
 		     *ptr; //for traversal
 	int sizeSub1 = 10, //determined by assignment
-		sizeSub2 = size - 10; //leftover 
+		sizeSub2 = size - 10; //leftover
 
 	cout << "Splitting the main list into 2 sub lists:" << endl;
 
@@ -405,12 +528,12 @@ void splitList(ListNode *&h, int size)
 				ptr = headSub2; //save
 				headSub2 = ptr->next; //advance
 		}
-		
+
 		ptr->next = NULL; //splits the list
     }
     else{
         cout << "Not enough nodes to split the list" << endl;
-        return; //exits if not enough nodes to split	
+        return; //exits if not enough nodes to split
     }
 
     cout << "Sub List 1:" << endl;
@@ -419,19 +542,34 @@ void splitList(ListNode *&h, int size)
 
     cout << "Sub List 2:" << endl;
     displayList(headSub2);
-    cout << endl;
+    cout << endl << endl;
 
-    //display union 
+    //display union
     //displayIntersection(headSub1, headSub2);
     //rejoin sublists into main list
 
     ptr->next = headSub2;
-
 }
+
+// *****************************************************************************
+// deleteList function: deletes all integers in the list.
+//
+// h - represents the head, or beginning, of the list.
+// size - represents the size of the list.
+//******************************************************************************
 
 void deleteList(ListNode *&h, int &size)
 {
-	//code
+	ListNode *p;
 
+	while(h)
+    {
+        p = h;
+        h = h->next;
+        delete p;
+        ListNode *p;
+    }
+
+    cout << "Delete the entire main list\n\n";
 	size = 0;
 }
