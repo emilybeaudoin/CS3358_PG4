@@ -46,15 +46,15 @@ void deleteList(ListNode *&, int &); //deletes entire list
 
 int main ()
 {
-    char answer; //represents user's answer to re-run program
+        char answer; //represents user's answer to re-run program
 	srand(time(NULL));
 
-	do
+    do
     {
-    ListNode *head = NULL; //initializing the main empty list
+        ListNode *head = NULL; //initializing the main empty list
 	int size = 19; //size of list starts at 19
 
-    buildSortedList(head, size); //builds a sorted list of integers
+        buildSortedList(head, size); //builds a sorted list of integers
 	insertNode(head, -100, size); //inserts -100 to the beginning of the list
 	insertNode(head, 15, 3, size); //inserts 15 at 3rd position in list
 	appendNode(head, 1000, size); //inserts 1000 to the end of the list
@@ -70,10 +70,10 @@ int main ()
 
 	cout << "Would you like to re-run the program again\n"
 	     << "Enter Y or N   --->   ";
-    cin >> answer; //user's answer
+        cin >> answer; //user's answer
 
-    while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n')
-// loop to ensure correct data type entered
+        while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n')
+	// loop to ensure correct data type entered
         {
             cout << "\nERROR *** Invalid selection " << answer
                  << " - Must be y|Y or n|N\n\n\n"
@@ -82,7 +82,7 @@ int main ()
             cin >> answer;
         }
 
-    cout << "\n";
+        cout << "\n";
 
     }while(answer == 'Y' || answer == 'y');
 
