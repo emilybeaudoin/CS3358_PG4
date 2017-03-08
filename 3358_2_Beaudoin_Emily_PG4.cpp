@@ -485,7 +485,7 @@ void displayUnion(ListNode *&h1, ListNode *&h2)
 {
 	ListNode *h, //reconnects both sub list's
 	         *p, //to traverse the list
-		     *previous,
+		 *previous,
 	         *ptr; //to hold the node searching for duplicates on
 
     h = h1; //makes h point to sub list 1
@@ -636,10 +636,10 @@ void splitList(ListNode *&h, int size)
     displayList(headSub2);
     cout << endl << endl;
 
-    //display union
-    //displayIntersection(headSub1, headSub2);
+    displayUnion(headSub1,headSub2);
+    displayIntersection(headSub1, headSub2);
+	
     //rejoin sublists into main list
-
     ptr->next = headSub2;
 }
 
