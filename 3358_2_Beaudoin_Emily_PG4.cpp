@@ -108,7 +108,7 @@ void buildSortedList(ListNode *&h, int size){
 	for(int i = 0; i < size; i++){ //creates list of SIZE nodes, in ascending
 // order
 
-		num = ((rand() % 10) + 10); //randomly generates a number 10-19
+		num = ((rand() % 11) + 10); //randomly generates a number 10-20
 
 		newNode = new ListNode; //dynamically allocates a new node
 		newNode->value = num; //stores random number in node
