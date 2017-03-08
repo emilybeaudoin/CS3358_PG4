@@ -474,11 +474,55 @@ void displayList(ListNode *&h, int size)
 	cout << endl << endl;
 }
 
+// *****************************************************************************
+// displayUnion function: displays the union of sub list 1 and sub list 2.
+//
+// h1 - represents the head, or beginning, of Sub List 1.
+// h2 - represents the head, or beginning, of Sub List 2.
+//******************************************************************************
+
 void displayUnion(ListNode *&h1, ListNode *&h2)
 {
-	//display the union of two list sets
-}
+	ListNode *h, //reconnects both sub list's
+	         *p, //to traverse the list
+		     *previous,
+	         *ptr; //to hold the node searching for duplicates on
 
+    h = h1; //makes h point to sub list 1
+
+    while(h1->next){
+        h1 = h1->next; //traverses sub list 1
+    }
+    h1->next = h2; //connects sub list 1 to sub list 2
+
+    ptr = h; //makes point to reconnected list
+
+	while(ptr){
+		p = ptr; //makes p point to ptr
+
+	 	while(p && p->next){ //prevent p from being null
+	 		previous = p; //saves
+	 		p = p->next; //advances
+
+	 		if(p->value == ptr->value){ //checks for duplicates
+	 			previous->next = p->next;
+	 			delete p; //removes duplicate
+	 			p = previous;
+	 		}
+		}
+		ptr = ptr->next;
+	}
+
+    cout << "The Union of Sub List 1 and Sub List 2:\n";
+
+    while(h) //displays the union of sub list 1 and sub list 2
+    {
+        cout << h->value << " ";
+        h = h->next;
+    }
+
+    cout << "\n\n";
+}
 
 //****problem with this, displays duplicates
 void displayIntersection(ListNode *&h1, ListNode *&h2)
