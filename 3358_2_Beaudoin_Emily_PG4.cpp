@@ -524,28 +524,76 @@ void displayUnion(ListNode *&h1, ListNode *&h2)
     cout << "\n\n";
 }
 
-//****problem with this, displays duplicates
+// *****************************************************************************
+// displayIntersection function: displays the intersection of two lists.
+//
+// h1 - represents the head, or beginning, of the first list.
+// h2 - represents the head, or beginning, of the second list.
+//******************************************************************************
+
 void displayIntersection(ListNode *&h1, ListNode *&h2)
 {
 	ListNode *ptr1,//first list traversal
-			 *ptr2;//second list traversal
+	         *ptr2,//second list traversal
+		     *intersection = NULL, // head of intersection list
+		     *newNode,
+		     *ptr,
+		     *p,
+		     *previous;
 
 	ptr1 = h1;
 
 	cout << "Intersection of two lists:" << endl;
-
+//determining intersection
 	while(ptr1){ //continues until all values of list 1 are checked with list 2
 		ptr2 = h2; //resets to beginning of second list
 
 		while(ptr2 && ptr2->value != ptr1->value) //finds node with same value
 			ptr2 = ptr2->next;
-		if(ptr2) //if value was found, prints result
-			cout << ptr2->value << " ";
-
+		if(ptr2){ //if value was found, adds result to intersection list
+	        newNode = new ListNode; //dynamically allocates new node
+	        newNode->value = ptr2->value; //assigns num to node value
+		    newNode->next = intersection; //makes new node point to head
+			intersection = newNode; //makes head point to new node;
+		}
+			
 		ptr1 = ptr1->next; //advances
 	}
-	cout << endl;
+
+//deleting duplicates from intersection list
+	ptr = intersection;
+
+	while(ptr){
+		p = ptr;
+
+
+	 	while(p && p->next){ //
+	 		previous = p; //saves
+	 		p = p->next; //advances
+
+	 		if(p->value == ptr->value){
+	 			previous->next = p->next;
+	 			delete p;
+	 			p = previous;
+	 		}
+		}
+
+		ptr = ptr->next;
+	}
+
+//display the list and delete the nodes
+	ptr = intersection; //points to beginning
+
+	while(ptr){ //while ptr does not point to NULL
+		cout << ptr->value << " ";
+		previous = ptr; //saves
+		ptr = ptr->next; //advances
+		delete previous; //deletes node that was already printed
+	}
+
+	cout << endl << endl;
 }
+
 
 // *****************************************************************************
 // splitList function: splits the list of integers into two separate lists.
