@@ -483,11 +483,11 @@ void displayList(ListNode *&h, int size)
 
 void displayUnion(ListNode *&h1, ListNode *&h2)
 {
-    ListNode *newHead, //reconnects both sub list's
-	     *newNode,
-	     *ptr,
-	     *ptr1, //to traverse the list
-	     *previous;
+	ListNode *newHead, //reconnects both sub list's
+			 *newNode,
+			 *ptr,
+	         *ptr1, //to traverse the list
+	         *previous;
 
     ptr1 = h1; //sets to beginning of first sublist
 
@@ -524,7 +524,7 @@ void displayUnion(ListNode *&h1, ListNode *&h2)
 
     
     //deleting duplicates
-    ptr = newHead;
+   	ptr = newHead;
 
 	while(ptr){
 		ptr1 = ptr;
@@ -547,17 +547,16 @@ void displayUnion(ListNode *&h1, ListNode *&h2)
     cout << "The Union of Sub List 1 and Sub List 2:\n";
 
     //display the list and delete the nodes
-    ptr = newHead; //points to beginning
+	ptr = newHead; //points to beginning
 
-    while(ptr){ //while ptr does not point to NULL
+	while(ptr){ //while ptr does not point to NULL
 		cout << ptr->value << " ";
 		previous = ptr; //saves
 		ptr = ptr->next; //advances
 		delete previous; //deletes node that was already printed
-    }
+	}
 
     cout << "\n\n";
-}
 }
 
 // *****************************************************************************
@@ -579,7 +578,7 @@ void displayIntersection(ListNode *&h1, ListNode *&h2)
 
 	ptr1 = h1;
 
-	cout << "Intersection of two lists:" << endl;
+	cout << "The Union of Sub List 1 and Sub List 2:\n" << endl;
 //determining intersection
 	while(ptr1){ //continues until all values of list 1 are checked with list 2
 		ptr2 = h2; //resets to beginning of second list
@@ -674,8 +673,7 @@ void splitList(ListNode *&h, int size)
 
     displayUnion(headSub1,headSub2);
     displayIntersection(headSub1, headSub2);
-	
-    //rejoin sublists into main list
+
     ptr->next = headSub2;
 }
 
