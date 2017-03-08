@@ -483,45 +483,81 @@ void displayList(ListNode *&h, int size)
 
 void displayUnion(ListNode *&h1, ListNode *&h2)
 {
-	ListNode *h, //reconnects both sub list's
-	         *p, //to traverse the list
-		 *previous,
-	         *ptr; //to hold the node searching for duplicates on
+    ListNode *newHead, //reconnects both sub list's
+	     *newNode,
+	     *ptr,
+	     *ptr1, //to traverse the list
+	     *previous;
 
-    h = h1; //makes h point to sub list 1
+    ptr1 = h1; //sets to beginning of first sublist
 
-    while(h1->next){
-        h1 = h1->next; //traverses sub list 1
+    newHead = new ListNode;
+    newHead->value = ptr1->value;
+    newHead->next = NULL;
+
+    ptr = newHead;
+
+    while(ptr1->next){ //adds all nodes from sublist one
+    	ptr1 = ptr1->next;
+
+    	newNode = new ListNode;
+    	newNode->value = ptr1->value;
+    	newNode->next = NULL;
+
+    	ptr->next = newNode; //appends node to the end
+    	ptr = ptr->next;
     }
-    h1->next = h2; //connects sub list 1 to sub list 2
 
-    ptr = h; //makes point to reconnected list
+    ptr1 = h2; //resets to beginning of second sublist
+    ptr->value = ptr1->value;
+
+    while(ptr1->next){ //adds all nodes from sublist two
+    	ptr1 = ptr1->next;
+
+    	newNode = new ListNode;
+    	newNode->value = ptr1->value;
+    	newNode->next = NULL;
+
+    	ptr->next = newNode; //appends node to the end
+    	ptr = ptr->next;
+    }
+
+    
+    //deleting duplicates
+    ptr = newHead;
 
 	while(ptr){
-		p = ptr; //makes p point to ptr
+		ptr1 = ptr;
 
-	 	while(p && p->next){ //prevent p from being null
-	 		previous = p; //saves
-	 		p = p->next; //advances
 
-	 		if(p->value == ptr->value){ //checks for duplicates
-	 			previous->next = p->next;
-	 			delete p; //removes duplicate
-	 			p = previous;
+	 	while(ptr1 && ptr1->next){ //
+	 		previous = ptr1; //saves
+	 		ptr1 = ptr1->next; //advances
+
+	 		if(ptr1->value == ptr->value){
+	 			previous->next = ptr1->next;
+	 			delete ptr1;
+	 			ptr1 = previous;
 	 		}
 		}
+
 		ptr = ptr->next;
 	}
 
     cout << "The Union of Sub List 1 and Sub List 2:\n";
 
-    while(h) //displays the union of sub list 1 and sub list 2
-    {
-        cout << h->value << " ";
-        h = h->next;
+    //display the list and delete the nodes
+    ptr = newHead; //points to beginning
+
+    while(ptr){ //while ptr does not point to NULL
+		cout << ptr->value << " ";
+		previous = ptr; //saves
+		ptr = ptr->next; //advances
+		delete previous; //deletes node that was already printed
     }
 
     cout << "\n\n";
+}
 }
 
 // *****************************************************************************
